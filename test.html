@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croisière</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff7eb3, #59c3ff);
+            text-align: center;
+            color: black;
+        }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        header {
+            padding: 20px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+        .card {
+            background: white;
+            color: black;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card img, .card video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .button {
+            background: yellow;
+            color: black;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background: orange;
+        }
+        #datetime {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <video class="background-video" autoplay loop muted>
+        <source src="Costa Fortuna.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo.
+    </video>
+
+    <!-- Audio avec un ID pour le contrôle -->
+    <audio id="background-music" loop>
+        <source src="Un mot - Choeur CSA RAMA.mp3" type="audio/mp3">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+
+    <header>
+        <h1> MADA GWADA </h1>
+        <p>Sur Costa Fortuna du 27/02/2025 au 06/03/2025</p>
+        <p id="datetime"></p>
+        <button class="button" id="music-control">⏸️ Pause</button>
+    </header>
+    
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById("datetime").textContent = now.toLocaleDateString('fr-FR', options);
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        const memories = [
+            { image: "Camron.jpg", title: "Camron", desc: "Le plus petit et la victime" },
+            { media: "Nathan.mp4", title: "Nathan", desc: "Il a essayé de tchek des filles mais il pense toujours à Eryne" },
+            { image: "Mathis.jpg", title: "Mathis", desc: "On en parle de son rire ?" },
+            { image: "Cawlyn.jpg", title: "Cawlyn", desc: "Ti Enriqué et 2e princesse" },
+            { image: "Enriqué.jpg", title: "Enriqué", desc: "Le Guadeloupéen et ti Cawlyn" },
+            { image: "Djelann.jpg", title: "Djelann", desc: "Le timide du groupe" },
+            { image: "Elodie.jpg", title: "Elodie", desc: "La princesse du groupe " },
+            { image: "Alhan.jpg", title: "Alhan", desc: "Le plus grand et le boss" }
+        ];
+
+        const escales = [
+            { media: "Gwada.jpg", title: "Guadeloupe", desc: "Première Escale mais wsv Gwada Mada nou ensenm" },
+            { media: "Tobago.jpg", title: "Tobago", desc: "Y'avait le carnaval et askip c'est le style de musique de Mathis" },
+            { media: "Grenade.jpg", title: "Grenade", desc: "Tout le monde à pris le singe en photo" },
+            { media: "St-Vincent.jpg", title: "St Vincent", desc: "Personne est allé mais askip on a raté des choses" },
+            { media: "Barbade.jpg", title: "Barbade", desc: "On à vu les maisons de Rihanna" },
+            { media: "Fort-De-France.jpg", title: "FDF", desc: "THE END" }
+        ];
+
+        const souvenirs = [
+            { media: "Mathis.mp4", title: "Mathis et Elodie", desc: "Fuck les blancs" },
+            { media: "Elodie.mp4", title: "Elodie et Nathan", desc: "Gros 15h yo la ka domi toujou" },
+            { media: "Enriqué.mp4", title: "Enriqué", desc: "Enriqué version super saiyan" },
+            { media: "Jcp.mp4", title: "Les noirs", desc: "Aucune explication" },
+            { media: "Jcp2.mp4", title: "Première fois sur scène", desc: "Elodie et Mathis sont meme pas venus bande de traite" },
+            { media: "Jcp3.mp4", title: "Les coincés du cul", desc: "Les 2 du milieu sont comme des djindjins" },
+            { media: "Premierefois.mp4", title: "Première fois à la discothèque", desc: "Yin ki mizik blanc yo té ka mété" }
+        ];
+
+        function loadMemories() {
+            const gallery = document.getElementById("gallery");
+            gallery.innerHTML = ""; // Vide la galerie avant de la remplir
+
+            // Étape 1: Souvenirs des membres
+            const sectionTitle1 = document.createElement("h2");
+            sectionTitle1.classList.add("section-title");
+            sectionTitle1.innerText = "Présentation de mes enfants et moi";
+            gallery.appendChild(sectionTitle1);
+
+            memories.forEach(mem => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                let mediaElement;
+
+                if (mem.image) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = mem.image;
+                    mediaElement.alt = mem.title;
+                } else if (mem.media) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = mem.media;
+                    mediaElement.muted = true;    
+                    mediaElement.loop = true;     
+                    mediaElement.autoplay = true; 
+                }
+
+                const content = document.createElement("div");
+                content.classList.add("card-content");
+                content.innerHTML = `
+                    <h3>${mem.title}</h3>
+                    <p>${mem.desc}</p>
+                `;
+
+                card.appendChild(mediaElement);
+                card.appendChild(content);
+                gallery.appendChild(card);
+            });
+
+            // Étape 2: Escales
+            const sectionTitle2 = document.createElement("h2");
+            sectionTitle2.classList.add("section-title");
+            sectionTitle2.innerText = "Nos Escales";
+            gallery.appendChild(sectionTitle2);
+
+            escales.forEach(escale => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                let mediaElement;
+
+                if (escale.media.endsWith(".jpg")) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = escale.media;
+                    mediaElement.alt = escale.title;
+                } else if (escale.media.endsWith(".mp4")) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = escale.media;
+                    mediaElement.muted = true;    
+                    mediaElement.loop = true;     
+                    mediaElement.autoplay = true; 
+                }
+
+                const content = document.createElement("div");
+                content.classList.add("card-content");
+                content.innerHTML = `
+                    <h3>${escale.title}</h3>
+                    <p>${escale.desc}</p>
+                `;
+
+                card.appendChild(mediaElement);
+                card.appendChild(content);
+                gallery.appendChild(card);
+            });
+
+            // Étape 3: Souvenirs personnels
+            const sectionTitle3 = document.createElement("h2");
+            sectionTitle3.classList.add("section-title");
+            sectionTitle3.innerText = "Quelques souvenirs";
+            gallery.appendChild(sectionTitle3);
+
+            souvenirs.forEach(souvenir => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                let mediaElement;
+
+                if (souvenir.media.endsWith(".jpg")) {
+                    mediaElement = document.createElement("img");
+                    mediaElement.src = souvenir.media;
+                    mediaElement.alt = souvenir.title;
+                } else if (souvenir.media.endsWith(".mp4")) {
+                    mediaElement = document.createElement("video");
+                    mediaElement.src = souvenir.media;
+                    mediaElement.muted = true;    
+                    mediaElement.loop = true;     
+                    mediaElement.autoplay = true; 
+                }
+
+                const content = document.createElement("div");
+                content.classList.add("card-content");
+                content.innerHTML = `
+                    <h3>${souvenir.title}</h3>
+                    <p>${souvenir.desc}</p>
+                `;
+
+                card.appendChild(mediaElement);
+                card.appendChild(content);
+                gallery.appendChild(card);
+            });
+        }
+
+        loadMemories();
+
+        // Gestion du bouton Play/Pause pour la musique
+        const music = document.getElementById("background-music");
+        const musicControl = document.getElementById("music-control");
+
+        let isPlaying = true;
+
+        musicControl.addEventListener("click", () => {
+            if (isPlaying) {
+                music.pause();
+                musicControl.textContent = "▶️ Lecture";
+            } else {
+                music.play();
+                musicControl.textContent = "⏸️ Pause";
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+
+</body>
+</html>
